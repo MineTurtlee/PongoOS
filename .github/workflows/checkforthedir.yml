@@ -1,0 +1,11 @@
+name: Check /home/runner/work/PongoOS
+on: 
+  workflow_dispatch:
+jobs:
+  Check-for-dir:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: check for dir
+        run: |
+          cd /home/runner/work/
+          dir
