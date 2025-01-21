@@ -32,6 +32,7 @@ ifeq ($(HOST_OS),Darwin)
 	C_FLAGS     ?= -Wall -O3 -x objective-c $(CFLAGS)
 	LD_FLAGS    ?= -framework Foundation -framework CoreFoundation -framework IOKit $(LDFLAGS)
 else
+	ARCH_FLAGS = -arch x86_64
 ifeq ($(HOST_OS),Linux)
 	C_FLAGS     ?= -Wall -O3 -DUSE_LIBUSB=1 $(CFLAGS)
 	LD_FLAGS    ?= -lpthread -lusb-1.0 $(LDFLAGS)
