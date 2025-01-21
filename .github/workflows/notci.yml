@@ -16,7 +16,7 @@ jobs:
           brew install make gcc 
       - name: Build pongoterm 
         run: | 
-          cd ${{ github.workspace }}/PongoOS/scripts
+          cd ${{ github.workspace }}/scripts
           make pongoterm
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
