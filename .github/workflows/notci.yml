@@ -1,0 +1,50 @@
+name: NotCI
+on: 
+  push:
+  pull_request:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: install toolchain
+        run: |
+          echo 'deb https://assets.checkra.in/debian /' | sudo tee /etc/apt/sources.list.d/checkra1n
+          sudo apt-key adv --fetch-keys https:assets.checkra.in/debian/archive.key
+          sudo apt-get update
+          sudo apt-get install -y ld64 cctools-strip
+      - name: voodoo magic (ight)
+        id: voodoo
+        uses: actions/cache@v4
+        with:
+          key: ${{ github.event_name }}-${{ github.ref }}-${{ github.run_id }}
+          restore-keys: |
+            push-${{ github.ref }}-
+            push-
+          path: |
+            **
+      - name: checkout repo
+        if: steps.voodoo.outputs.cache-hit != 'true'
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: update rpo
+        if: steps.voodoo.outputs.cache-hit == 'true'
+        run: |
+          git fetch --all
+          git reset --hard origin/$(git branch --show-current)
+          git submodule update --recursive --remote
+      - name: get build tools
+        run: sudo apt-get update && sudo apt-get install -y build-essential
+      - name: compile the term
+        run: |
+          cd /home/runner/work/work/PongoOS/scripts
+          gcc -o pongoterm pongoterm.c
+      - name: Upload artifacts
+        uses: actions/upload-artifact@latest
+        with:
+          name: pongoterm
+          path: /home/runner/work/work/PongoOS/scripts/pongoterm
