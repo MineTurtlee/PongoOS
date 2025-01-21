@@ -39,10 +39,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y build-essential
       - name: compile the term
         run: |
-          cd /home/runner/work/PongoOS/scripts
+          cd /home/runner/work/PongoOS/PongoOS/scripts
           gcc -o pongoterm pongoterm.c
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: pongoterm
-          path: /home/runner/work/PongoOS/scripts/pongoterm
+          path: /home/runner/work/PongoOS/PongoOS/scripts/pongoterm
