@@ -9,3 +9,5 @@ jobs:
         run: |
           cd /home/runner/work/
           dir
+          cd PongoOS
+          dir
